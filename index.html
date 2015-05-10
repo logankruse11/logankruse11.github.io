@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <style>  
+      table, th , td {
+        font-family: cursive;
+        cursor: pointer;
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 5px;
+      }
+      th{
+        background-color: #000;
+        color: white;
+      }
+      .selected{
+        background-color: #f00;
+      }
+      tr:nth-child(even) {
+        background-color: #aaa;
+      }
+      h1{
+        font-family:cursive;
+      }
+      p{
+        font-family:cursive;
+      }
+  </style>
+  </head>
+  <body>
+    <h1>UX Society Members</h1>
+      <div>
+        <div ng-app="myApp" ng-controller="thisNGCtrl">
+          <input type="text" placeholder="Search" ng-model="thisSelectedName" style="width: 70%">
+          <br><br>
+          <table style="width:70%; float:left">
+            <col width="60%">
+            <col width="40%">
+            <tr>
+              <th>Name</th>
+              <th>Location</th>
+            </tr>
+            <tr ng-repeat="x in names | filter:thisSelectedName" ng-click="setSelected(x)" ng-class="{'selected': x.Name === selectedName}">
+              <td>{{x.Name}}</td>
+              <td>{{x.City +", "+x.Country}}</td>
+            </tr>
+          </table>
+          <div style="border:3px solid black; margin-left:10px; width:25%; float: right">
+            <p> Name: {{selectedName}}</p>
+            <p> City: {{thisCity}}</p>
+            <p> Country: {{thisCountry}}</p>
+          </div>
+          </div>
+    </div>
+    <script>
+      var app = angular.module('myApp', []);
+      app.controller('thisNGCtrl', function($scope, $http) {
+        
+        //Data from w3schools.com
+        $http.get("http://www.w3schools.com/angular/customers.php")
+          .success(function(data) {$scope.names = data.records;});
+      
+      $scope.selectedName=null;
+      $scope.thisCity=null;
+      $scope.thisCountry=null
+      $scope.setSelected = function setSelected(x){
+        $scope.selectedName = x.Name;
+        $scope.thisCity=x.City;
+        $scope.thisCountry=x.Country;
+      }});
+  </script>
+  </body>
+</html>
