@@ -17,9 +17,9 @@
       .selected{
         background-color: #f00;
       }
-      tr:nth-child(even) {
-        background-color: #aaa;
-      }
+      .notSelected:nth-child(even) {
+			background-color: #aaa;
+	  }
       h1{
         font-family:cursive;
       }
@@ -41,7 +41,9 @@
               <th>Name</th>
               <th>Location</th>
             </tr>
-            <tr ng-repeat="x in names | filter:thisSelectedName" ng-click="setSelected(x)" ng-class="{'selected': x.Name === selectedName}">
+            <tr ng-repeat="x in names | filter:thisSelectedName" 
+				ng-click="main.setSelected(x)" 
+				ng-class="{'selected': x.Name === main.selectedName, 'notSelected': x.Name !== main.selectedName}">
               <td>{{x.Name}}</td>
               <td>{{x.City +", "+x.Country}}</td>
             </tr>
@@ -66,13 +68,14 @@
         People.list(function(People){
 			$scope.names=People.records;
 		});
-      $scope.selectedName=null;
-      $scope.thisCity=null;
-      $scope.thisCountry=null
-      $scope.setSelected = function setSelected(x){
-        $scope.selectedName = x.Name;
-        $scope.thisCity=x.City;
-        $scope.thisCountry=x.Country;
+
+      this.setSelected = function setSelected(x){
+        this.selectedName = x.Name;
+        this.thisCity=x.City;
+        this.thisCountry=x.Country;
+      }
+      $scope.selectRow = function(row) {
+		$scope.selectedRow = row;
       }});
   </script>
   </body>
