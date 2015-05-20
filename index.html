@@ -32,7 +32,10 @@
     <h1>UX Society Members</h1>
       <div>
         <div ng-app="myApp" ng-controller="thisNGCtrl as main">
-          <input type="text" placeholder="Search" ng-model="thisSelectedName" style="width: 70%">
+          <input type="text" placeholder="Search" ng-model="thisSelectedName" style="width: 50%; float:left">
+          <select ng-model="selectedCountry" ng-options="x.Country for x in names">
+			<option value="">Select</option>
+          </select>
           <br><br>
           <table style="width:70%; float:left">
             <col width="60%">
@@ -41,7 +44,6 @@
               <th>Name</th>
               <th>Location</th>
             </tr>
-            <tr ng-repeat="x in names | filter:thisSelectedName" 
 				ng-click="main.setSelected(x)" 
 				ng-class="{'selected': x.Name === main.selectedName, 'notSelected': x.Name !== main.selectedName}">
               <td>{{x.Name}}</td>
