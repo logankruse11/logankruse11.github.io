@@ -44,6 +44,7 @@
               <th>Name</th>
               <th>Location</th>
             </tr>
+            <tr ng-repeat="x in names | filter:thisSelectedName | filter:selectedCountry" 
 				ng-click="main.setSelected(x)" 
 				ng-class="{'selected': x.Name === main.selectedName, 'notSelected': x.Name !== main.selectedName}">
               <td>{{x.Name}}</td>
