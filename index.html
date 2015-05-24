@@ -31,9 +31,9 @@
   <body>
     <h1>UX Society Members</h1>
       <div>
-        <div ng-app="myApp" ng-controller="thisNGCtrl as main">
+        <div ng-app="myApp" ng-controller="peopleController as main">
           <input type="text" placeholder="Search" ng-model="thisSelectedName" style="width: 50%; float:left">
-          <select ng-model="selectedCountry" ng-options="x.Country for x in names">
+          <select ng-model="selectedCountry" ng-options="x.Country for x in main.names|countryList">
 			<option value="">Select</option>
           </select>
           <br><br>
@@ -44,15 +44,15 @@
               <th>Name</th>
               <th>Location</th>
             </tr>
-            <tr ng-repeat="x in names | filter:thisSelectedName | filter:selectedCountry" ng-click="main.setSelected(x)" ng-class="{'selected': x.Name === main.selectedName, 'notSelected': x.Name !== main.selectedName}">
+            <tr ng-repeat="x in main.names| filter:thisSelectedName | filter:selectedCountry" ng-click="main.setSelected(x)" ng-class="{'selected': x.Name === main.selectedPerson.Name, 'notSelected': x.Name !== main.selectedPerson.Name}">
               <td>{{x.Name}}</td>
               <td>{{x.City +", "+x.Country}}</td>
             </tr>
           </table>
           <div style="border:3px solid black; margin-left:10px; width:25%; float: right">
-            <p> Name: {{main.selectedName}}</p>
-            <p> City: {{main.thisCity}}</p>
-            <p> Country: {{main.thisCountry}}</p>
+            <p> Name: {{main.selectedPerson.Name}}</p>
+            <p> City: {{main.selectedPerson.City}}</p>
+            <p> Country: {{main.selectedPerson.Country}}</p>
           </div>
           </div>
     </div>
@@ -65,16 +65,43 @@
           }
         };
       });
-      app.controller('thisNGCtrl', function($scope, People) {
-        People.list(function(People){
-			$scope.names=People.records;
-		});
+		app.controller('peopleController', function(People) {
+		  var vm = this;
+		  
+		  vm.names;
 
-      this.setSelected = function setSelected(x){
-        this.selectedName = x.Name;
-        this.thisCity=x.City;
-        this.thisCountry=x.Country;
-      }});
+		  vm.init = function() {
+			People.list(function(people) {
+			  vm.names = people.records;
+			});
+		  };
+		  
+		  vm.init();
+			
+		  vm.setSelected = function(x) {
+			vm.selectedPerson = x;
+		  };
+		});
+		app.filter('countryList', function () {
+			return function (input) {
+				if(typeof input == 'undefined'){
+					console.log("Undefined!");
+					return input;
+				}
+				console.log("AAAAAAAAAAAA");
+				var item = input[0].Country.toString();
+				var list = [item.toString()];
+				for (var i = 1; i < input.length; i++) {
+					var item = input[i].Country.toString();
+					if (list.indexOf(item)===-1) {
+						list.push(item);
+					
+				}
+			}
+			console.log(list);
+			return list;		
+		};
+	  });
   </script>
   </body>
 </html>
