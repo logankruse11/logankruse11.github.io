@@ -44,7 +44,7 @@
               <th>Name</th>
               <th>Location</th>
             </tr>
-            <tr ng-repeat="x in main.names| filter:thisSelectedName | filter:selectedCountry" ng-click="main.setSelected(x)" ng-class="{'selected': x.Name === main.selectedPerson.Name, 'notSelected': x.Name !== main.selectedPerson.Name}">
+            <tr ng-repeat="x in main.names| filter:thisSelectedName | filter: x.Country = selectedCountry.Country" ng-click="main.setSelected(x)" ng-class="{'selected': x.Name === main.selectedPerson.Name, 'notSelected': x.Name !== main.selectedPerson.Name}">
               <td>{{x.Name}}</td>
               <td>{{x.City +", "+x.Country}}</td>
             </tr>
@@ -89,19 +89,21 @@
 					return input;
 				}
 				console.log("AAAAAAAAAAAA");
-				var item = input[0].Country.toString();
-				var list = [item.toString()];
+				var item = input[0];
+				var list = [item];
+				var test = [item.Country];
 				for (var i = 1; i < input.length; i++) {
-					var item = input[i].Country.toString();
-					if (list.indexOf(item)===-1) {
+					var item = input[i];
+					if (test.indexOf(item.Country)===-1) {
 						list.push(item);
-					
+						test.push(item.Country);
 				}
 			}
 			console.log(list);
 			return list;		
 		};
 	  });
+
   </script>
   </body>
 </html>
